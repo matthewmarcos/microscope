@@ -7,16 +7,16 @@ Template.postEdit.events({
 			title: $(e.target).find('[name=title]').val()
 		}
 
-		Meteor.call('postEdit', postProperties, function (err, res) {
+		Meteor.call('postEdrit', postProperties, function (err, res) {
 			if(err) {
-				return alert(err.reason);
+				return throwError(err.reason);
+			} else if(res.postExists) {
+				// alert('A post with this link already exists!');
+				throwError('A post with this link already exists!');
+			} else {
+				Router.go('postPage', {_id: res._id}); //constructs URL for us to go to.
 			}
 
-			if(res.postExists) {
-				alert('A post with this link has already been posted!');
-			}
-
-			Router.go('postPage', {_id: res._id}); //constructs URL for us to go to.
 		});
 		// Posts.update(currentPostId, {$set: postProperties}, function(error) {
 		// 	if (error) {

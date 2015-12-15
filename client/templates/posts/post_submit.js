@@ -14,14 +14,14 @@ Template.postSubmit.events({
 
 		Meteor.call('postInsert', post, function(err, res) {
 			if(err) {
-				return alert(err.reason);
+				throwError(err.reason);
+			} else if(res.postExists) {
+				// alert('This link has already been posted!');
+				throwError('A post with this link already exists!');
+			} else {
+				Router.go('postPage', {_id: res._id}); //constructs URL for us to go to.				
 			}
 
-			if(res.postExists) {
-				alert('This link has already been posted!');
-			}
-
-			Router.go('postPage', {_id: res._id}); //constructs URL for us to go to.
 		});
 
 	}
