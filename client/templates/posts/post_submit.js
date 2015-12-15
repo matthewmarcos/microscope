@@ -1,4 +1,15 @@
-Template.postSubmit.helpers ({});
+Template.postSubmit.created = function() {
+	Session.set('postSubmitErrors', {});
+};
+
+Template.postSubmit.helpers ({
+	errorMessage: function(field) {
+		return Session.get('postSubmitErrors')[field];
+	},
+	errorClass: function (field) {
+		return !!Session.get('postSubmitErrors')[field] ? 'has-error' : '';
+	}
+});
 
 Template.postSubmit.events({
 	'submit form': function(e) {
@@ -8,9 +19,11 @@ Template.postSubmit.events({
 			title: $(e.target).find('[name=title]').val()
 		};
 		
-
 		// Only when insecure package is installed (Allows posts from client)
-		// post._id = Posts.insert(post);
+
+		var errors = validatePost(post);
+		if (errors.title || errors.url)
+			return Session.set('postSubmitErrors', errors);
 
 		Meteor.call('postInsert', post, function(err, res) {
 			if(err) {
@@ -26,3 +39,4 @@ Template.postSubmit.events({
 
 	}
 });
+
