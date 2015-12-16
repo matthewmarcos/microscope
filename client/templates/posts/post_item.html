@@ -4,11 +4,15 @@
 			<h3><a href="{{url}}">{{title}}</a><span>{{domain}}</span></h3>
 			<p>
 				Submitted by: {{author}}
+				<a href="{{pathFor 'postPage'}}">{{commentsCount}} comments</a>
 				{{#if ownPost}}
 					<a href="{{pathFor 'postEdit'}}">Edit</a>
 				{{/if}}
 			</p>
 		</div>
+
+		{{#if alreadyInPage}}
 			<a href="{{pathFor 'postPage'}}" class="discuss btn btn-default">Discuss</a>
+		{{/if}}
 	</div>
 </template>
