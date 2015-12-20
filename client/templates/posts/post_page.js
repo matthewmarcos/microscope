@@ -1,5 +1,5 @@
 Template.postPage.helpers({
-	comments: function() {
+	'comments'() {
 		return Comments.find({postId: this._id});
 	}
 });
